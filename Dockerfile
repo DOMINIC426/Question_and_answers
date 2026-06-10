@@ -1,10 +1,10 @@
-# Build stage (Updated to Java 21)
+# Build stage
 FROM maven:3.9-eclipse-temurin-21 AS build
 COPY . .
 RUN ./mvnw clean package -DskipTests
 
-# Run stage (Updated to Java 21)
+# Run stage
 FROM eclipse-temurin:21-jre-jammy
 COPY --from=build /target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xmx450M", "-jar", "app.jar"]
